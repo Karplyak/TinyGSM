@@ -202,11 +202,11 @@ class TinyGsmBG96 : public TinyGsmModem<TinyGsmBG96>,
    * Power functions
    */
  protected:
-  bool restartImpl(const char* pin = NULL) {
+  bool restartImpl() {
     if (!testAT()) { return false; }
     if (!setPhoneFunctionality(1, true)) { return false; }
     waitResponse(10000L, GF("APP RDY"));
-    return init(pin);
+    return init();
   }
 
   bool powerOffImpl() {
@@ -235,16 +235,7 @@ class TinyGsmBG96 : public TinyGsmModem<TinyGsmBG96>,
    */
  public:
   RegStatus getRegistrationStatus() {
-    // Check first for EPS registration
-    RegStatus epsStatus = (RegStatus)getRegistrationStatusXREG("CEREG");
-
-    // If we're connected on EPS, great!
-    if (epsStatus == REG_OK_HOME || epsStatus == REG_OK_ROAMING) {
-      return epsStatus;
-    } else {
-      // Otherwise, check generic network status
-      return (RegStatus)getRegistrationStatusXREG("CREG");
-    }
+    return (RegStatus)getRegistrationStatusXREG("CREG");
   }
 
  protected:

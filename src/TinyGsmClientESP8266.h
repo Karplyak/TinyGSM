@@ -182,13 +182,13 @@ class TinyGsmESP8266 : public TinyGsmModem<TinyGsmESP8266>,
    * Power functions
    */
  protected:
-  bool restartImpl(const char* pin = NULL) {
+  bool restartImpl() {
     if (!testAT()) { return false; }
     sendAT(GF("+RST"));
     if (waitResponse(10000L) != 1) { return false; }
     if (waitResponse(10000L, GF(GSM_NL "ready" GSM_NL)) != 1) { return false; }
     delay(500);
-    return init(pin);
+    return init();
   }
 
   bool powerOffImpl() {

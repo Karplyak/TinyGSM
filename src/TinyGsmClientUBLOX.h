@@ -243,11 +243,11 @@ class TinyGsmUBLOX : public TinyGsmModem<TinyGsmUBLOX>,
    * Power functions
    */
  protected:
-  bool restartImpl(const char* pin = NULL) {
+  bool restartImpl() {
     if (!testAT()) { return false; }
     if (!setPhoneFunctionality(16)) { return false; }
     delay(3000);  // TODO(?):  Verify delay timing here
-    return init(pin);
+    return init();
   }
 
   bool powerOffImpl() {

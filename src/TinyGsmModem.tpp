@@ -53,8 +53,8 @@ class TinyGsmModem {
   /*
    * Power functions
    */
-  bool restart(const char* pin = NULL) {
-    return thisModem().restartImpl(pin);
+  bool restart() {
+    return thisModem().restartImpl();
   }
   bool poweroff() {
     return thisModem().powerOffImpl();
@@ -134,22 +134,31 @@ class TinyGsmModem {
   }
 
   String getModemNameImpl() {
+    //DBG("#TinyGsmModem.tpp#getModemNameImpl# Modem:");
+	 String res1;
+	if (thisModem().waitResponse(1000L, res1) != 1) { DBG("### Modem:getModemNameImpl "); }
     thisModem().sendAT(GF("+CGMI"));
-    String res1;
+   
     if (thisModem().waitResponse(1000L, res1) != 1) { return "unknown"; }
+	//if (thisModem().waitResponse(1000L, res1) != 1) { return "unknown"; }
+	//DBG("### Modem:res1= ",res1);
+	
     res1.replace("\r\nOK\r\n", "");
     res1.replace("\rOK\r", "");
     res1.trim();
+	
+    //DBG("### Modem:res1=> ",res1);
 
     thisModem().sendAT(GF("+GMM"));
     String res2;
     if (thisModem().waitResponse(1000L, res2) != 1) { return "unknown"; }
+	///DBG("### Modem:res2=> ",res2);
     res2.replace("\r\nOK\r\n", "");
     res2.replace("\rOK\r", "");
     res2.trim();
 
     String name = res1 + String(' ') + res2;
-    DBG("### Modem:", name);
+    ///DBG("### Modem:", name);
     return name;
   }
 

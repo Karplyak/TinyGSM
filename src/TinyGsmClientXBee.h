@@ -487,7 +487,7 @@ class TinyGsmXBee : public TinyGsmModem<TinyGsmXBee>,
     }
   }
 
-  bool restartImpl(const char* pin = NULL) {
+  bool restartImpl() {
     if (!commandMode()) { return false; }  // Return immediately
 
     if (beeType == XBEE_UNKNOWN) getSeries();  // how we restart depends on this
@@ -525,7 +525,7 @@ class TinyGsmXBee : public TinyGsmModem<TinyGsmXBee>,
 
     exitCommand();
 
-    return init(pin);
+    return init();
   }
 
   void setupPinSleep(bool maintainAssociation = false) {
